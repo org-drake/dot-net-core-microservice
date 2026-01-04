@@ -1,0 +1,43 @@
+# Build results
+**/bin/
+**/obj/
+
+# User-specific files
+**/*.user
+**/*.suo
+**/*.userosscache
+**/*.sln.docstates
+
+# Visual Studio / VS Code
+.vs/
+.vscode/
+
+# Rider / JetBrains
+.idea/
+
+# OS / tooling
+.DS_Store
+Thumbs.db
+
+# Test results / coverage
+**/TestResults/
+**/*.trx
+**/*.coverage
+**/*.coveragexml
+**/coverage/
+
+# Logs
+**/*.log
+
+# NuGet
+**/packages/
+
+# ASP.NET Core
+secrets.json
+**/appsettings.*.local.json
+
+# Docker
+**/*.tar
+
+# Kubernetes generated files
+k8s/*.rendered.yaml
