@@ -70,5 +70,7 @@ jobs:
 
       - name: Deploy to AKS
         run: |
+          # Update the image in the manifest
+          sed -i "s|REPLACE_IMAGE|${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main-${{ github.sha }}|g" ${{ env.DEPLOYMENT_MANIFEST_PATH }}
           kubectl apply -f ${{ env.DEPLOYMENT_MANIFEST_PATH }}
-          kubectl rollout status deployment/dot-net-core-microservice
+          kubectl rollout status deployment/dot-net-core-microservice -n dotnet-demo
