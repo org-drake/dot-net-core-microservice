@@ -1,15 +1,21 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>dot_net_core_microservice</RootNamespace>
+    <UserSecretsId>94634565-6b98-4801-8adb-6269d9100fa2</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.22" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\dot-net-core-microservice.Application\dot-net-core-microservice.Application.csproj" />
+    <ProjectReference Include="..\dot-net-core-microservice.Infrastructure\dot-net-core-microservice.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,6 +2,9 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 COPY dot-net-core-microservice.sln ./
+COPY src/dot-net-core-microservice.Domain/dot-net-core-microservice.Domain.csproj src/dot-net-core-microservice.Domain/
+COPY src/dot-net-core-microservice.Application/dot-net-core-microservice.Application.csproj src/dot-net-core-microservice.Application/
+COPY src/dot-net-core-microservice.Infrastructure/dot-net-core-microservice.Infrastructure.csproj src/dot-net-core-microservice.Infrastructure/
 COPY src/dot-net-core-microservice/dot-net-core-microservice.csproj src/dot-net-core-microservice/
 RUN dotnet restore src/dot-net-core-microservice/
 

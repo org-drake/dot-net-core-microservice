@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.*" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
     <PackageReference Include="Moq" Version="4.20.70" />
     <PackageReference Include="xunit" Version="2.4.2" />
@@ -26,6 +27,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\dot-net-core-microservice\dot-net-core-microservice.csproj" />
+    <ProjectReference Include="..\..\src\dot-net-core-microservice.Application\dot-net-core-microservice.Application.csproj" />
+    <ProjectReference Include="..\..\src\dot-net-core-microservice.Infrastructure\dot-net-core-microservice.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

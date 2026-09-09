@@ -1,3 +1,7 @@
+# Before applying: create the SQL Server credentials secret referenced below, e.g.:
+#   kubectl create secret generic sql-credentials -n dotnet-demo \
+#     --from-literal=username=<sql-username> \
+#     --from-literal=password=<sql-password>
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -39,6 +43,22 @@ spec:
               value: Production
             - name: ASPNETCORE_URLS
               value: http://+:8080
+            - name: Sql__Host
+              value: "192.168.29.56"
+            - name: Sql__Port
+              value: "1433"
+            - name: Sql__Database
+              value: "ProductCatalogDb"
+            - name: Sql__User
+              valueFrom:
+                secretKeyRef:
+                  name: sql-credentials
+                  key: username
+            - name: Sql__Password
+              valueFrom:
+                secretKeyRef:
+                  name: sql-credentials
+                  key: password
           volumeMounts:
             - name: tmp
               mountPath: /tmp
