@@ -47,4 +47,6 @@ curl http://localhost:5191/api/weatherforecast
 - HTTPS profile uses the local development certificate that ships with the .NET SDK; trust it if your browser warns.
 - Swagger is enabled for the Development environment by default.
 - Unit tests cover both service and controller layers using xUnit and Moq.
+- CORS is deny-by-default. To allow a browser client, add its origin(s) to `Cors:AllowedOrigins` in `appsettings.json` (or `appsettings.Development.json`), e.g. `["https://localhost:3000"]`.
+- Unhandled exceptions are converted to a generic ProblemDetails (RFC 7807) response by the built-in `UseExceptionHandler()` middleware instead of leaking a raw stack trace.
 
