@@ -1,11 +1,31 @@
-# Before applying: create the SQL Server credentials secret referenced below, e.g.:
-#   kubectl create secret generic sql-credentials -n dotnet-demo \
-#     --from-literal=username=<sql-username> \
-#     --from-literal=password=<sql-password>
+# Before applying:
+#   1. Create the Basic Auth secret:
+#        kubectl create secret generic api-basic-auth -n dotnet-demo \
+#          --from-literal=username=<api-username> \
+#          --from-literal=password=<api-password>
+#   2. Set up Microsoft Entra Workload ID for passwordless Azure SQL Database access -
+#      run scripts/setup-workload-identity.sh, then replace CLIENT_ID_PLACEHOLDER below
+#      with the user-assigned managed identity's client ID it prints.
+#   3. Point Sql__Host at your Azure SQL Database (<server>.database.windows.net) -
+#      Managed Identity auth does not work against the self-hosted dev SQL Server.
+#   No SQL username/password secret is needed: the pod authenticates as the managed
+#   identity via federated Workload ID, never storing a database credential at all.
+#   4. Register the API in Microsoft Entra ID (run scripts/register-entra-api.sh) and
+#      replace AZURE_AD_TENANT_ID_PLACEHOLDER / AZURE_AD_AUDIENCE_PLACEHOLDER below with
+#      the values it prints, so callers can authenticate with a Bearer token instead of
+#      (or alongside) Basic Auth.
 apiVersion: v1
 kind: Namespace
 metadata:
   name: dotnet-demo
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: dot-net-core-microservice
+  namespace: dotnet-demo
+  annotations:
+    azure.workload.identity/client-id: CLIENT_ID_PLACEHOLDER
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -21,7 +41,9 @@ spec:
     metadata:
       labels:
         app: dot-net-core-microservice
+        azure.workload.identity/use: "true"
     spec:
+      serviceAccountName: dot-net-core-microservice
       securityContext:
         runAsNonRoot: true
         seccompProfile:
@@ -44,20 +66,26 @@ spec:
             - name: ASPNETCORE_URLS
               value: http://+:8080
             - name: Sql__Host
-              value: "192.168.29.56"
+              value: "<your-server>.database.windows.net"
             - name: Sql__Port
               value: "1433"
             - name: Sql__Database
               value: "ProductCatalogDb"
-            - name: Sql__User
+            - name: Sql__AuthenticationMode
+              value: "ManagedIdentity"
+            - name: AzureAd__TenantId
+              value: "AZURE_AD_TENANT_ID_PLACEHOLDER"
+            - name: AzureAd__Audience
+              value: "AZURE_AD_AUDIENCE_PLACEHOLDER"
+            - name: BasicAuth__Username
               valueFrom:
                 secretKeyRef:
-                  name: sql-credentials
+                  name: api-basic-auth
                   key: username
-            - name: Sql__Password
+            - name: BasicAuth__Password
               valueFrom:
                 secretKeyRef:
-                  name: sql-credentials
+                  name: api-basic-auth
                   key: password
           volumeMounts:
             - name: tmp

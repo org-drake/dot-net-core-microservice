@@ -5,11 +5,13 @@ using dot_net_core_microservice.Application.Products.Commands.UpdateProduct;
 using dot_net_core_microservice.Application.Products.Queries.GetAllProducts;
 using dot_net_core_microservice.Application.Products.Queries.GetProductById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dot_net_core_microservice.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class ProductsController(ISender sender) : ControllerBase
 {

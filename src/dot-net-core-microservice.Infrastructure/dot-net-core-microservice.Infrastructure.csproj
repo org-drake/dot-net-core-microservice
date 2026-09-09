@@ -11,6 +11,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.*" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="8.*" />
+    <!-- Pinned above EF Core 8's transitive 5.1.x: Active Directory Workload Identity auth
+         (used for passwordless Azure SQL access from AKS) needs 5.2+. -->
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.0" />
   </ItemGroup>
 
   <PropertyGroup>
